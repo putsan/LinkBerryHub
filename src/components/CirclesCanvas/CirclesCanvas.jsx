@@ -1,29 +1,29 @@
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import generateRandomColor from '../../utils/generateRandomColor';
+import { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
+import generateRandomColor from "../../utils/generateRandomColor";
 
 const CirclesCanvas = ({ circlesData }) => {
   console.log(6,'circlesData: ', circlesData);
   const canvasRef = useRef(null);
 
-  window.addEventListener("pageshow", function(event) {
+  window.addEventListener("pageshow", function (event) {
     if (event.persisted) {
       console.log("Сторінка була відновлена з кешу.");
-      } else {
+    } else {
       console.log("Сторінка була завантажена вперше або перезавантажена.");
-      }
+    }
   });
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const circles = circlesData.map(data => ({
+    const ctx = canvas.getContext("2d");
+    const circles = circlesData.map((data) => ({
       id: data.id,
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 104,
       color: generateRandomColor(),
-      name: data.name
+      name: data.name,
     }));
 
     function draw() {
@@ -37,9 +37,9 @@ const CirclesCanvas = ({ circlesData }) => {
         ctx.closePath();
 
         // Draw the text
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
         ctx.font = `${circle.radius * 0.3}px Arial`;
         ctx.fillText(circle.name, circle.x, circle.y, circle.radius * 1.8);
       }
@@ -47,14 +47,14 @@ const CirclesCanvas = ({ circlesData }) => {
 
     function getCircleAtCoordinates(x, y) {
       for (const circle of circles) {
-          const dx = x - circle.x;
-          const dy = y - circle.y;
-          if (dx * dx + dy * dy <= circle.radius * circle.radius) {
-              return circle;
-          }
+        const dx = x - circle.x;
+        const dy = y - circle.y;
+        if (dx * dx + dy * dy <= circle.radius * circle.radius) {
+          return circle;
+        }
       }
       return null;
-  }
+    }
 
     function adjustCirclePositions() {
       // Adjust positions to avoid overlap and fit within the canvas
@@ -68,29 +68,43 @@ const CirclesCanvas = ({ circlesData }) => {
           if (distance < minDistance) {
             const angle = Math.atan2(dy, dx);
             const overlap = minDistance - distance + 5;
-            circles[i].x += Math.cos(angle) * overlap / 2;
-            circles[j].x -= Math.cos(angle) * overlap / 2;
-            circles[i].y += Math.sin(angle) * overlap / 2;
-            circles[j].y -= Math.sin(angle) * overlap / 2;
+            circles[i].x += (Math.cos(angle) * overlap) / 2;
+            circles[j].x -= (Math.cos(angle) * overlap) / 2;
+            circles[i].y += (Math.sin(angle) * overlap) / 2;
+            circles[j].y -= (Math.sin(angle) * overlap) / 2;
 
             // Keep circles within canvas bounds
-            circles[i].x = Math.min(Math.max(circles[i].radius, circles[i].x), canvas.width - circles[i].radius);
-            circles[j].x = Math.min(Math.max(circles[j].radius, circles[j].x), canvas.width - circles[j].radius);
-            circles[i].y = Math.min(Math.max(circles[i].radius, circles[i].y), canvas.height - circles[i].radius);
-            circles[j].y = Math.min(Math.max(circles[j].radius, circles[j].y), canvas.height - circles[j].radius);
+            circles[i].x = Math.min(
+              Math.max(circles[i].radius, circles[i].x),
+              canvas.width - circles[i].radius
+            );
+            circles[j].x = Math.min(
+              Math.max(circles[j].radius, circles[j].x),
+              canvas.width - circles[j].radius
+            );
+            circles[i].y = Math.min(
+              Math.max(circles[i].radius, circles[i].y),
+              canvas.height - circles[i].radius
+            );
+            circles[j].y = Math.min(
+              Math.max(circles[j].radius, circles[j].y),
+              canvas.height - circles[j].radius
+            );
           }
         }
       }
     }
 
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener("mousemove", (e) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const circle = getCircleAtCoordinates(x, y);
 
       // Reset all to original size
-      circles.forEach(c => c.originalRadius ? c.radius = c.originalRadius : 0);
+      circles.forEach((c) =>
+        c.originalRadius ? (c.radius = c.originalRadius) : 0
+      );
 
       if (circle) {
         // Save original radius if not saved yet
@@ -102,18 +116,18 @@ const CirclesCanvas = ({ circlesData }) => {
       }
     });
 
-          canvas.addEventListener('click', (e) => {
-              const rect = canvas.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const y = e.clientY - rect.top;
-              const circle = getCircleAtCoordinates(x, y);
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const circle = getCircleAtCoordinates(x, y);
 
-              if (circle) {
-                  navigator.clipboard.writeText(circle.name).then(() => {
-                      console.log(`${circle.name} copied to clipboard`);
-                  });
-              }
-          });
+      if (circle) {
+        navigator.clipboard.writeText(circle.name).then(() => {
+          console.log(`${circle.name} copied to clipboard`);
+        });
+      }
+    });
 
     adjustCirclePositions();
     draw();
