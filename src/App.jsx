@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AddButton from './components/AddButton/AddButton';
 import CirclesCanvas from "./components/CirclesCanvas/CirclesCanvas";
-import getXataClient from './services/xata/xata.js';
+import { getXataClient } from './services/xata/xata.js';
 
 function App() {
   const [circlesData, setCirclesData] = useState([]);
