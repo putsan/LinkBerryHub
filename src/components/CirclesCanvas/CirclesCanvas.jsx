@@ -1,8 +1,17 @@
 import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import generateRandomColor from '../../utils/generateRandomColor';
 
 const CirclesCanvas = ({ circlesData }) => {
   const canvasRef = useRef(null);
+
+  window.addEventListener("pageshow", function(event) {
+    if (event.persisted) {
+      console.log("Сторінка була відновлена з кешу.");
+      } else {
+      console.log("Сторінка була завантажена вперше або перезавантажена.");
+      }
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,7 +21,7 @@ const CirclesCanvas = ({ circlesData }) => {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: data.size / 2,
-      color: '#' + Math.floor(Math.random() * 16777214 + 1).toString(16), // Exclude white color
+      color: generateRandomColor(),
       name: data.name
     }));
 
