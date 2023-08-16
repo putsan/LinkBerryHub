@@ -23,3 +23,4 @@ non_proj_utils
 *.njsproj
 *.sln
 *.sw?
+db_schema.json
