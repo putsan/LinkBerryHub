@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AddButton from './components/AddButton/AddButton';
 import CirclesCanvas from "./components/CirclesCanvas/CirclesCanvas";
-import { getBookmarks } from './services/bookmarksService';
+import { getBookmarks } from './services/planeetScale/bookmarksService';
 
 function App() {
   const [circlesData, setCirclesData] = useState([]);

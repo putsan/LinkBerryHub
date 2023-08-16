@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addBookmark } from '../../services/bookmarksService';
+import { addBookmark } from '../../services/planeetScale/bookmarksService';
 import PropTypes from 'prop-types';
 
 function AddLinkModal({ onClose, onAdd }) {
