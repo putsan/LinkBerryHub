@@ -1,0 +1,7 @@
+{
+  "databaseURL": "https://putsan-s-workspace-g7o6u0.eu-central-1.xata.sh/db/links",
+  "codegen": {
+    "output": "src/xata.js",
+    "moduleType": "esm"
+  }
+}

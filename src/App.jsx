@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
 import AddButton from './components/AddButton/AddButton';
 import CirclesCanvas from "./components/CirclesCanvas/CirclesCanvas";
-import { getBookmarks } from './services/planeetScale/bookmarksService';
+import getXataClient from './services/xata/xata.js';
 
 function App() {
   const [circlesData, setCirclesData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const results = await getBookmarks();
-      setCirclesData(results);
+      try {
+        const xata = getXataClient();
+        const records = await xata.db.links
+          .select(["id", "url", "name"])
+          .getAll();
+        setCirclesData(records);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
     };
 
     fetchData();

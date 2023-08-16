@@ -10,7 +10,6 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-non_proj_utils
 *.local
 
 # Editor directories and files
@@ -23,4 +22,7 @@ non_proj_utils
 *.njsproj
 *.sln
 *.sw?
+
 db_schema.json
+.xata
+non_proj_utils

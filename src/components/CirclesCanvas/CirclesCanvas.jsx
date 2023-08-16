@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import generateRandomColor from '../../utils/generateRandomColor';
 
 const CirclesCanvas = ({ circlesData }) => {
+  console.log(6,'circlesData: ', circlesData);
   const canvasRef = useRef(null);
 
   window.addEventListener("pageshow", function(event) {
@@ -20,7 +21,7 @@ const CirclesCanvas = ({ circlesData }) => {
       id: data.id,
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      radius: data.size / 2,
+      radius: Math.random() * 104,
       color: generateRandomColor(),
       name: data.name
     }));
