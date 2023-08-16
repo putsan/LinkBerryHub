@@ -35,6 +35,17 @@ const CirclesCanvas = ({ circlesData }) => {
       }
     }
 
+    function getCircleAtCoordinates(x, y) {
+      for (const circle of circles) {
+          const dx = x - circle.x;
+          const dy = y - circle.y;
+          if (dx * dx + dy * dy <= circle.radius * circle.radius) {
+              return circle;
+          }
+      }
+      return null;
+  }
+
     function adjustCirclePositions() {
       // Adjust positions to avoid overlap and fit within the canvas
       for (let i = 0; i < circles.length; i++) {
@@ -62,7 +73,37 @@ const CirclesCanvas = ({ circlesData }) => {
       }
     }
 
-    // ... Same mousemove and click event listeners ...
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const circle = getCircleAtCoordinates(x, y);
+
+      // Reset all to original size
+      circles.forEach(c => c.originalRadius ? c.radius = c.originalRadius : 0);
+
+      if (circle) {
+        // Save original radius if not saved yet
+        if (!circle.originalRadius) {
+          circle.originalRadius = circle.radius;
+        }
+        circle.radius *= 1.1; // Increase the size by 10%
+        draw(); // Draw only when a circle is hovered
+      }
+    });
+
+          canvas.addEventListener('click', (e) => {
+              const rect = canvas.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              const circle = getCircleAtCoordinates(x, y);
+
+              if (circle) {
+                  navigator.clipboard.writeText(circle.name).then(() => {
+                      console.log(`${circle.name} copied to clipboard`);
+                  });
+              }
+          });
 
     adjustCirclePositions();
     draw();
